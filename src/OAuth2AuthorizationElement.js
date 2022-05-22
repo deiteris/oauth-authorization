@@ -32,7 +32,11 @@ export class OAuth2AuthorizationElement extends EventsTargetMixin(HTMLElement) {
    * @param {OAuth2AuthorizeEvent} e
    */
   [authorizeHandler](e) {
+    const apic = document.querySelector('api-console,api-console-app');
     const config = { ...e.detail };
+    if (apic.proxy) {
+      config.accessTokenUri = apic.proxy + (apic.proxyEncodeUrl ? encodeURIComponent(config.accessTokenUri) : config.accessTokenUri);
+    }
     e.detail.result = this.authorize(config);
   }
 
